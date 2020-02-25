@@ -1,18 +1,12 @@
-version: 2
-jobs:
- build:
-   machine: true
-   steps:
-     - checkout 
+ version: 2.1
 
-     # build image
-     - run: |
-         docker info
-         docker build -t aspnetapp -f Dockerfile .
-     # deploy the image
-     - run: |
-         docker login --username=$lkostoprav@gmail.com --password=$2e5e126b-9169-460d-bd20-2eedb2fa477e registry.heroku.com
-         docker tag aspnetapp registry.heroku.com/$carhistoryvin/web
-         docker push registry.heroku.com/$carhistoryvin/web                
-         curl https://cli-assets.heroku.com/install.sh | sh
-         heroku container:release web -a $carhistoryvin
+ orbs:
+  win: circleci/windows@2.2.0
+
+ jobs:
+   build:
+     executor: win/default     
+    
+     steps:
+       - checkout
+       - run: dotnet build
